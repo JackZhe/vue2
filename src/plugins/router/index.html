@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <a href="/home">home</a>
+    <a href="/about">about</a>
+    <!-- 渲染路由模块 -->
+    <div id="view"></div>
+  </body>
+  <script>
+    let view = document.querySelector("#view");
+    // Hash 路由模式
+    // let cb = () => {
+    //   let hash = location.hash || "#/home";
+    // };
+    // window.addEventListener("hashchange", cb);
+    // window.addEventListener("load", cb);
+
+    // History 路由模式
+
+    function push(path = "/home") {
+      window.history.pushState(null, "", path);
+      update();
+    }
+    function update() {
+      view.innerHTML = location.pathname;
+    }
+    window.addEventListener("popstate", () => {
+      update();
+    });
+    window.addEventListener("load", () => {
+      let links = document.querySelectorAll("a[href]");
+      links.forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          push(el.getAttribute("href"));
+        });
+      });
+      push();
+    });
+  </script>
+</html>
