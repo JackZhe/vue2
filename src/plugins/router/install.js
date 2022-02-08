@@ -2,7 +2,19 @@
  * @path: src/hello-vue-router/install.js
  * @Description: 插件安装方法install
  */
+import View from "../../components/view";
+import Link from "../../components/link";
+
+export let _Vue;
 export function install(Vue){
+  if (install.installed && _Vue === Vue) return;
+  install.installed = true;
+  
+  // 全局注册组件router-view
+  Vue.component('RouterView', View);
+
+  // 全局注册组件router-link
+  Vue.component('RouterLink', Link);  
   // 使用Vue.mixin混入每一个组件
   Vue.mixin({
     // 使用Vue.mixin混入每一个组件
@@ -20,7 +32,7 @@ export function install(Vue){
         // 非根组件，也要把父组件的_routerRoot保存到自身身上
         this._routerRoot = this.$parent && this.$parent._routerRoot
         // 子组件也要挂上$router
-        this.$router = this._routerRoot.$router
+        this._router = this._routerRoot.$router
       }
     },
   })
